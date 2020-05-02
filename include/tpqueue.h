@@ -43,7 +43,7 @@ void TPQueue<T>::push(const T& item)
     
     int pos;
     for (pos = begin; pos <= end; ++pos)
-        if (item.prior < arr[pos].prior)
+        if (item.prior > arr[pos].prior)
             break;
     for (int i = end++ - 1; i >= pos; --i)
         arr[i + 1] = arr[i];
@@ -116,6 +116,6 @@ bool TPQueue<T>::isFull() const
 
 struct SYM
 {
-	char ch;
-	int  prior;
+	char ch='H';
+	int  prior=0;
 };
