@@ -1,12 +1,6 @@
 
 #include <cassert>
 
-struct SYM
-{
-    char ch='H';
-    int prior=-1;
-};
-
 template<typename T>
 class TPQueue
 {
@@ -108,3 +102,10 @@ bool TPQueue<T>::isFull() const
 {
     return count == size;
 }
+
+
+struct SYM
+{
+    char ch='H';
+    int prior=-1;
+};
