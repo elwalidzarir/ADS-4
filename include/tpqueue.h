@@ -41,14 +41,27 @@ void TPQueue<T>::push(const T& item)
 	// проверяем, ести ли свободное место в очереди
 	assert(count < size);
 
-	int pos;
-    for (pos = begin; pos <= end; ++pos)
-        if (item.prior > arr[pos].prior)
-            break;
-    for (int i = end++ - 1; i >= pos; --i)
-        arr[i + 1] = arr[i];
-    arr[pos] = item;
-    ++count;
+	if (count == 0)
+	{
+		arr[end++] = item;
+		count++;
+	}
+	else
+	{
+		int i = end-1;
+		bool flag = 0;
+		while (i>=begin && item.prior > arr[i].prior)
+		{
+			flag = 1;
+			arr[i + 1] = arr[i];
+			arr[i] = item;
+			i--;
+		}
+		if (flag == 0)
+			arr[end] = item;
+		end++;
+		count++;
+	}
 
 	// проверка кругового заполнения очереди
 	if (end > size)
