@@ -3,7 +3,6 @@
 template<typename T>
 class TPQueue
 {
-  // Сюда помещается описание структуры "Очередь с приоритетами"
 private:
 	T* arr;          // массив с данными
 	int size;        // максимальное количество элементов в очереди (размер массива)
@@ -13,7 +12,6 @@ private:
 public:
 	TPQueue(int = 100);          // конструктор по умолчанию
 	~TPQueue();                 // деструктор
-
 	void push(const T&); // добавить элемент в очередь
 	T pop();              // удалить элемент из очереди
 	T get() const;        // прочитать первый элемент
@@ -42,6 +40,14 @@ void TPQueue<T>::push(const T& item)
 	// проверяем, ести ли свободное место в очереди
 	assert(count < size);
 
+	int pos;
+    for (pos = begin; pos <= end; ++pos)
+        if (item.prior > arr[pos].prior)
+            break;
+    for (int i = end++ - 1; i >= pos; --i)
+        arr[i + 1] = arr[i];
+    arr[pos] = item;
+    ++count;
 	if (count == 0)
 	{
 		arr[end++] = item;
@@ -74,14 +80,11 @@ T TPQueue<T>::pop()
 {
 	// проверяем, есть ли в очереди элементы
 	assert(count > 0);
-
 	T item = arr[begin++];
 	count--;
-
 	// проверка кругового заполнения очереди
 	if (begin > size)
 		begin -= size + 1; // возвращаем begin на начало очереди
-
 	return item;
 }
 // функция чтения элемента на первой позиции
@@ -104,11 +107,8 @@ bool TPQueue<T>::isFull() const
 {
 	return count == size;
 }
-
-
 struct SYM
 {
 	char ch;
 	int  prior;
-}; 
 };
