@@ -56,7 +56,6 @@ void TPQueue<T>::push(const T& item)
             arr[i - 1] = arr[i];
             arr[i] = tmp;
         }
-        i--;
     }
     count++;
     end++;
