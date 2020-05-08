@@ -21,6 +21,7 @@ public:
 	bool isFull() const;
 };
 
+
 template<typename T>
 TPQueue<T>::TPQueue(int sizeQueue) :
 	size(sizeQueue),
