@@ -50,7 +50,7 @@ void TPQueue<T>::push(const T& item)
 	{
 		int i = end-1;
 		bool flag = 0;
-		while (i>=begin && item.pr > arr[i].pr)
+		while (i>=begin && item.prior > arr[i].prior)
 		{
 			flag = 1;
 			arr[i + 1] = arr[i];
@@ -108,6 +108,6 @@ bool TPQueue<T>::isFull() const
 struct SYM
 {
 	char ch;
-	int  pr;
+	int  prior;
 }; 
 };
