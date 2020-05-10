@@ -58,7 +58,7 @@ void TPQueue<T>::push(const T& item)
         {
             arr[i + 1] = arr[i];
             arr[i] = item;
-	    if (i = begin)
+	    if (i == begin)
                 break;
         }
         end++;
