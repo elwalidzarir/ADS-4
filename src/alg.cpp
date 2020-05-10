@@ -1,6 +1,5 @@
 #include <cassert>
  
-
 template<typename T>
 class TPQueue
 {
