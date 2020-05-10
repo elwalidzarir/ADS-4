@@ -1,10 +1,8 @@
 #include <cassert>
- 
 
 template<typename T>
 class TPQueue
 {
-  // Сюда помещается описание структуры "Очередь с приоритетами"
 private:
     T* arr;          // массив с данными
     int size;        // максимальное количество элементов в очереди (размер массива)
@@ -131,9 +129,6 @@ bool TPQueue<T>::isFull() const
 
 struct SYM
 {
-	char ch;
-	int  prior;
-}; 
     char ch;
     int prior;
 };
