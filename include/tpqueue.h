@@ -1,140 +1,93 @@
-#include <cassert>
-
 template<typename T>
 class TPQueue
 {
   // Сюда помещается описание структуры "Очередь с приоритетами"
-    struct ITEM
-    {
-        T data;
-        ITEM* next;
-    };
-public:
-    TPQueue() :head(nullptr), tail(nullptr) {}
-    ~TPQueue();
-    void push(const T&);
-    T pop();
-    void print() const;
 private:
-    TPQueue::ITEM* create(const T&);
-    ITEM* head;
-    ITEM* u;
-    ITEM* tail;
+	T* arr;         
+	int size;   
+	int begin,      
+		end;      
+	int count;     
+public:
+	TPQueue(int = 100);          
+	~TPQueue();               
+
+	void push(const T&); 
+	T pop();              
+	T get() const;      
+	bool isEmpty() const;     
+	bool isFull() const;
 };
+
 template<typename T>
-typename TPQueue<T>::ITEM* TPQueue<T>::create(const T& data)
+TPQueue<T>::TPQueue(int sizeQueue) :
+	size(sizeQueue),
+	begin(0), end(0), count(0)
 {
-    ITEM* item = new ITEM;
-    item->data = data;
-    item->next = nullptr;
-    return item;
+	arr = new T[size + 1];
 }
+
 template<typename T>
 TPQueue<T>::~TPQueue()
 {
-    while (head)
-        pop();
+	delete[] arr;
 }
+
 template<typename T>
-void TPQueue<T>::push(const T& inf)
+void TPQueue<T>::push(const T& item)
 {
-    if (head == nullptr)
-    {
-        head = create(inf);
-        u = head;
-        tail = head;
-    }
-    else if (tail->data.prior >= inf.prior)
-    {
+	assert(count < size);
 
-        if (tail->data.prior == inf.prior && tail->data.ch == inf.ch)
-        {
+	arr[end] = item;
 
-            tail->data = inf;
+	for (int i = end; i > 0; i--)
+	{
+		if (arr[i].prior > arr[i - 1].prior)
+		{
+			T temp = arr[i - 1];
+			arr[i - 1] = arr[i];
+			arr[i] = temp;
+		}
+	}
+	count++;
+	end++;
 
-        }
-        else
-        {
-            if (tail->data.prior >= inf.prior && tail->data.ch != inf.ch)
-            {
-                tail->next = create(inf);
-                tail = tail->next;
-            }
-        }
-    }
-    else
-    {
-
-        if (tail->data.prior < inf.prior)
-        {
-            if (inf.prior > head->data.prior)
-            {
-                ITEM* tmp = NULL;
-                tmp = create(inf);
-                tmp->next = head;
-                head = tmp;
-            }
-            else
-
-                if (inf.prior == head->data.prior)
-
-                    if (inf.ch == head->data.ch)
-                        head->data = inf;
-                    else
-                    {
-                        ITEM* u = nullptr;
-                        u = create(inf);
-                        u->next = head->next;
-                        head->next = u;
-
-                    }
-
-                else
-                {
-                    if (inf.prior < head->data.prior)
-                    {
-                        ITEM* u = nullptr;
-                        u = create(inf);
-                        u->next = head->next;
-                        head->next = u;
-                    }
-                }
-
-
-
-
-
-        }
-    }
+	if (end > size)
+		end -= size + 1;
 }
+
 
 template<typename T>
 T TPQueue<T>::pop()
 {
-    if (head)
-    {
-        ITEM* temp = head->next;
-        T data = head->data;
-        delete head;
-        head = temp;
-        return data;
-    }
+	assert(count > 0);
 
+	T item = arr[begin++];
+	count--;
+
+	if (begin > size)
+		begin -= size + 1; 
+
+	return item;
 }
+
 template<typename T>
-void TPQueue<T>::print() const	
+T TPQueue<T>::get() const
 {
-    {
-        ITEM* temp = head;	   
-        while (temp)	 
-        {
-            {
-                std::cout << temp->data << " ";	        
-                temp = temp->next;	       
-            }
-        }
-        std::cout << std::endl;	    std::cout << std::endl;
-    }
+	assert(count > 0);
+	return arr[begin];
+}
+
+template<typename T>
+bool TPQueue<T>::isEmpty() const
+{
+	return count == 0;
+}
+
+template<typename T>
+bool TPQueue<T>::isFull() const
+{
+	return count == size;
 }
 
 struct SYM
@@ -142,7 +95,4 @@ struct SYM
 	char ch;
 	int  prior;
 }; 
-    char ch;
-    int prior;
-    SYM* next;
-};  
+};
