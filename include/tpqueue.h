@@ -1,23 +1,21 @@
 #include <cassert>
- 
 template<typename T>
+
 class TPQueue
 {
-  // Сюда помещается описание структуры "Очередь с приоритетами"
 private:
-	T* arr;         
-	int size;   
-	int begin,      
-		end;      
-	int count;     
+	T* arr;
+	int size;
+	int begin,
+		end;
+	int count;
 public:
-	TPQueue(int = 100);          
-	~TPQueue();               
-
-	void push(const T&); 
-	T pop();              
-	T get() const;      
-	bool isEmpty() const;     
+	TPQueue(int = 100);
+	~TPQueue();
+	void push(const T &);
+	T pop();
+	T get() const;
+	bool isEmpty() const;
 	bool isFull() const;
 };
 
@@ -26,8 +24,10 @@ TPQueue<T>::TPQueue(int sizeQueue) :
 	size(sizeQueue),
 	begin(0), end(0), count(0)
 {
+
 	arr = new T[size + 1];
 }
+
 
 template<typename T>
 TPQueue<T>::~TPQueue()
@@ -35,47 +35,61 @@ TPQueue<T>::~TPQueue()
 	delete[] arr;
 }
 
+
+
 template<typename T>
 void TPQueue<T>::push(const T& item)
 {
 	assert(count < size);
 
-	arr[end] = item;
-
-	for (int i = end; i > 0; i--)
+	if (count == 0)
 	{
-		if (arr[i].prior > arr[i - 1].prior)
-		{
-			T temp = arr[i - 1];
-			arr[i - 1] = arr[i];
-			arr[i] = temp;
-		}
+		arr[end++] = item;
+		count++;
 	}
-	count++;
-	end++;
+	else
+	{
+		bool priory = 0; 
+		int i = end - 1;
+
+		while ((item.prior > arr[i].prior)&&(i >= begin))
+		{
+			arr[i + 1] = arr[i];
+			arr[i] = item;
+			i--;
+			priory = 1;
+		}
+		if (priory == 0)
+			arr[end] = item;
+		end++;
+		count++;
+	}
 
 	if (end > size)
 		end -= size + 1;
 }
 
-
 template<typename T>
 T TPQueue<T>::pop()
 {
+
 	assert(count > 0);
 
 	T item = arr[begin++];
 	count--;
 
+
 	if (begin > size)
-		begin -= size + 1; 
+		begin -= size + 1;
 
 	return item;
 }
 
+
 template<typename T>
 T TPQueue<T>::get() const
 {
+
 	assert(count > 0);
 	return arr[begin];
 }
@@ -85,6 +99,7 @@ bool TPQueue<T>::isEmpty() const
 {
 	return count == 0;
 }
+
 
 template<typename T>
 bool TPQueue<T>::isFull() const
@@ -96,5 +111,4 @@ struct SYM
 {
 	char ch;
 	int  prior;
-}; 
 };
