@@ -1,8 +1,7 @@
 #include <cassert>
- 
+
 template<typename T>
-class TPQueue
-{
+class TPQueue {
 private:
     T *arr;          // массив с данными
     int size;        // максимальное количество элементов в очереди (размер массива)
@@ -10,7 +9,7 @@ private:
     end;         // конец очереди
     int count;       // счетчик элементов
 public:
-    TPQueue(int =100);          // конструктор по умолчанию
+    TPQueue(int = 100);          // конструктор по умолчанию
     ~TPQueue();                 // деструктор
 
     void push(const T &); // добавить элемент в очередь
@@ -24,37 +23,35 @@ public:
 template<typename T>
 TPQueue<T>::TPQueue(int sizeQueue) :
         size(sizeQueue),
-        begin(0), end(0), count(0)
-{
+        begin(0), end(0), count(0) {
     // дополнительный элемент поможет нам различать конец и начало очереди
     arr = new T[size + 1];
 }
 
 // деструктор класса Queue
 template<typename T>
-TPQueue<T>::~TPQueue()
-{
-    delete [] arr;
+TPQueue<T>::~TPQueue() {
+    delete[] arr;
 }
 
 
 // функция добавления элемента в очередь
 template<typename T>
-void TPQueue<T>::push(const T & item)
-{
+void TPQueue<T>::push(const T &item) {
     // проверяем, ести ли свободное место в очереди
-    assert( count < size );
-
-    int current = begin;
-    while (item.prior <= arr[current].prior) {
-        current += 1;
+    assert(count < size);
+    arr[end] = item;
+    int i = end;
+    while (i > 0) {
+        if (arr[i].prior > arr[i - 1].prior) {
+            T tmp = arr[i - 1];
+            arr[i - 1] = arr[i];
+            arr[i] = tmp;
+        }
+        i--;
     }
-    for (int i = end; i>=current; i--) {
-        arr[i + 1] = arr[i];
-    }
-    end += 1;
-    arr[current] = item;
     count++;
+    end++;
     // проверка кругового заполнения очереди
     if (end > size)
         end -= size + 1; // возвращаем end на начало очереди
@@ -62,10 +59,9 @@ void TPQueue<T>::push(const T & item)
 
 // функция удаления элемента из очереди
 template<typename T>
-T TPQueue<T>::pop()
-{
+T TPQueue<T>::pop() {
     // проверяем, есть ли в очереди элементы
-    assert( count > 0 );
+    assert(count > 0);
 
     T item = arr[begin++];
     count--;
@@ -79,30 +75,26 @@ T TPQueue<T>::pop()
 
 // функция чтения элемента на первой позиции
 template<typename T>
-T TPQueue<T>::get() const
-{
+T TPQueue<T>::get() const {
     // проверяем, есть ли в очереди элементы
-    assert( count > 0 );
+    assert(count > 0);
     return arr[begin];
 }
 
 // функция проверки очереди на пустоту
 template<typename T>
-bool TPQueue<T>::isEmpty() const
-{
-    return count==0;
+bool TPQueue<T>::isEmpty() const {
+    return count == 0;
 }
 
 // функция проверки очереди на заполненность
 template<typename T>
-bool TPQueue<T>::isFull() const
-{
-    return count==size;
+bool TPQueue<T>::isFull() const {
+    return count == size;
 };
 
 
-struct SYM
-{
-	char ch;
-	int  prior;
+struct SYM {
+    char ch;
+    int prior;
 };
